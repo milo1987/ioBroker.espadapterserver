@@ -3,6 +3,9 @@
         "name": "espadapterserver",
         "version": "0.0.1",
         "news": {
+			"0.0.2": {
+				"de": "Github Release"
+			},
             "0.0.1": {
                 "en": "initial adapter",
                 "de": "Initiale Version",

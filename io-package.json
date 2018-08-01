@@ -1,0 +1,51 @@
+{
+    "common": {
+        "name": "espadapterserver",
+        "version": "0.0.1",
+        "news": {
+			"0.0.2": {
+				"de": "Github Release"
+			},
+            "0.0.1": {
+                "en": "initial adapter",
+                "de": "Initiale Version",
+                "ru": "Первоначальный адаптер",
+                "pt": "Versão inicial",
+                "fr": "Version initiale",
+                "nl": "Eerste release"
+            }
+        },
+		"title": "ESP Adapter Server",
+        "titleLang": {
+            "de": "Adapterserver für ESP Controller"
+        },
+        "desc": {
+            "de": "Adapter zur Kontrolle von ESP Controllern"
+        },
+        "authors": [
+            "Michael Lanfermann <admin@milanworld.de>"
+        ],
+        "docs": {
+            "de": "docs/de/admin.md"
+        },
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "icon": "template.png",
+        "materialize": true,
+        "enabled": true,
+        "extIcon": "",
+        "keywords": ["template", "vis", "GUI", "graphical", "scada"],
+        "readme": "https://github.com/milo1987/espadapterserver/blob/master/README.md",
+        "loglevel": "info",
+        "type": "general",
+        "license": "GNU3",
+        "messagebox": false
+    },
+    "native": {
+        "port": 9999,
+        "espupdateurl": ""
+    },
+    "objects": [
+
+    ]
+}

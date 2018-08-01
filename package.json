@@ -1,0 +1,43 @@
+{
+  "name": "iobroker.espadapterserver",
+  "version": "0.0.1",
+  "description": "ioBroker ESP Adapter Server",
+  "author": {
+    "name": "M Lanfermann",
+    "email": "admin@milanworld.de"
+  },
+  "contributors": [
+    {
+      "name": "M Lanfermann",
+      "email": "admin@milanworld"
+    }
+  ],
+  "homepage": "https://github.com/milo1987/espadapterserver",
+  "license": "GNU3",
+  "keywords": [
+    "ioBroker",
+    "template",
+    "Smart Home",
+    "home automation",
+	"esp8266",
+	"socketio"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/milo1987/espadapterserver"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "mocha": "^4.1.0",
+    "chai": "^4.1.2"
+  },
+  "main": "main.js",
+  "scripts": {
+    
+  },
+  "bugs": {
+    "url": "https://github.com/milo1987/espadapterserver/issues"
+  },
+  "readmeFilename": "README.md"
+}

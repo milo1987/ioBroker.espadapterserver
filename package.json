@@ -53,7 +53,7 @@
   "name": "iobroker.espadapterserver",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/milo1987/espadapterserver.git"
+    "url": "https://github.com/milo1987/espadapterserver.git"
   },
   "scripts": {},
   "version": "0.0.2"

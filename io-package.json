@@ -1,15 +1,13 @@
 {
     "common": {
         "name": "espadapterserver",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "news": {
+			"0.0.2": {
+				"de": "GIThub Version\n Log und Debug Funktionen wurden eingefügt."
+			},
             "0.0.1": {
-                "en": "initial adapter",
                 "de": "Initiale Version",
-                "ru": "Первоначальный адаптер",
-                "pt": "Versão inicial",
-                "fr": "Version initiale",
-                "nl": "Eerste release"
             }
         },
 		"title": "ESP Adapter Server",
@@ -31,7 +29,7 @@
         "materialize": true,
         "enabled": true,
         "extIcon": "",
-        "keywords": ["template", "vis", "GUI", "graphical", "scada"],
+        "keywords": ["esp8266", "esp32", "Socket.IO"],
         "readme": "https://github.com/milo1987/espadapterserver/blob/master/README.md",
         "loglevel": "info",
         "type": "general",

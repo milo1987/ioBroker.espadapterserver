@@ -127,10 +127,12 @@ class ESPSocketServer {
 				
 				let parts = id.split(".");
 				let name = parts[2];
+				
 				let varname = parts[4];
 				//adapter.log.info("Parts: " + parts[parts.length-1]);
 				
 				if (parts[parts.length-1] === "webupdate") {
+					
 					if (state.val) {
 					
 						this._io.sockets.in(name).emit('webUpdate', adapter.config.espupdateurl);
@@ -140,12 +142,17 @@ class ESPSocketServer {
 					
 					}
 					
+				} else if (parts[parts.length-1] === "debug") {
+				
+					this._io.sockets.in(name).emit('debug', state.val);	
+					adapter.log.debug('Debuglevel für: ' + name + ' aktiviert');
+				
 				} else {
 				
 
 					this._io.sockets.in(name).emit('command', varname + "~" + state.val);
 					
-					adapter.log.info('Variabeländerung gesendet an ' + name + ': ' + state.val);
+					adapter.log.debug('Variabeländerung gesendet an ' + name + ': ' + state.val);
 			
 			
 				}
@@ -187,6 +194,7 @@ class ESPSocketServer {
 				socket.name = parts[0];
 				socket.version = parts[1];
 				socket.ip = parts[2];
+				socket.apiversion = parts[3];
 				
 				socket.join(socket.name);
 				
@@ -199,7 +207,7 @@ class ESPSocketServer {
 				
 				// Clientname für die Onlinetabelle anlegen
 				
-				adapter.setObject(varname + ".status", {
+				adapter.setObjectNotExists(varname + ".status", {
 						type: 'state',
 						common: {
 							name: varname + ".status",
@@ -213,9 +221,39 @@ class ESPSocketServer {
 				adapter.setState(varname + ".status" , {val:true, ack:true});	
 				
 				
+				// Version
+				
+				adapter.setObjectNotExists(varname + ".version", {
+						type: 'state',
+						common: {
+							name: varname + ".version",
+							type: 'mixed',
+							role: 'indicator',
+							ack:  'true'
+						},
+						native: {}
+					});
+					
+				adapter.setState(varname + ".version" , {val:socket.version, ack:true});	
+				
+				// API - Version
+				
+				adapter.setObjectNotExists(varname + ".apiversion", {
+						type: 'state',
+						common: {
+							name: varname + ".apiversion",
+							type: 'mixed',
+							role: 'indicator',
+							ack:  'true'
+						},
+						native: {}
+					});
+					
+				adapter.setState(varname + ".apiversion" , {val:socket.apiversion, ack:true});	
+				
 				// IP Adresse
 				
-				adapter.setObject(varname + ".ip", {
+				adapter.setObjectNotExists(varname + ".ip", {
 						type: 'state',
 						common: {
 							name: varname + ".ip",
@@ -230,6 +268,21 @@ class ESPSocketServer {
 				
 				
 				
+				// DEBUG Level
+				
+				adapter.setObjectNotExists(varname + ".debug", {
+						type: 'state',
+						common: {
+							name: varname + ".debug",
+							type: 'boolean',
+							role: 'indicator',
+							ack:  'true'
+						},
+						native: {}
+					});
+					
+				adapter.setState(varname + ".debug" , {val:false, ack:true});	
+				adapter.subscribeStates(varname + ".debug");
 				
 				// Webupdate einfügen
 				
@@ -323,6 +376,15 @@ class ESPSocketServer {
 				
 			
 			
+			});
+			
+			
+			socket.on('logdebug', msg => { 
+				adapter.log.info("Log-Debug " + socket.name + ": " + msg);
+			});
+			
+			socket.on('logerror', msg => { 
+				adapter.log.error("Log-Error " + socket.name + ": " + msg);
 			});
 			
 			//socket.emit("event", "Testevent");

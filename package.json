@@ -1,43 +1,60 @@
 {
-  "name": "iobroker.espadapterserver",
-  "version": "0.0.2",
-  "description": "ioBroker ESP Adapter Server",
+  "_from": "https://github.com/milo1987/espadapterserver/tarball/master",
+  "_id": "iobroker.espadapterserver@0.0.1",
+  "_inBundle": false,
+  "_integrity": "sha512-EKv0RYF8ravgNp1iDxR52ENjUe8HuUs2Q33Hsn4n6cBJ0Rw6XAROGHgJYTjjji9nHFnWvKvZoCy/ix7WtEAM1A==",
+  "_location": "/iobroker.espadapterserver",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "https://github.com/milo1987/espadapterserver/tarball/master",
+    "rawSpec": "https://github.com/milo1987/espadapterserver/tarball/master",
+    "saveSpec": "https://github.com/milo1987/espadapterserver/tarball/master",
+    "fetchSpec": "https://github.com/milo1987/espadapterserver/tarball/master"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://github.com/milo1987/espadapterserver/tarball/master",
+  "_shasum": "c4dca9c7157a6568a23626f7dc2f65d0519bac45",
+  "_spec": "https://github.com/milo1987/espadapterserver/tarball/master",
+  "_where": "D:\\Software\\Installation",
   "author": {
     "name": "M Lanfermann",
     "email": "admin@milanworld.de"
   },
+  "bugs": {
+    "url": "https://github.com/milo1987/espadapterserver/issues"
+  },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "M Lanfermann",
       "email": "admin@milanworld"
     }
   ],
+  "dependencies": {},
+  "deprecated": false,
+  "description": "ioBroker ESP Adapter Server",
+  "devDependencies": {
+
+  },
   "homepage": "https://github.com/milo1987/espadapterserver",
-  "license": "GNU3",
   "keywords": [
     "ioBroker",
     "template",
     "Smart Home",
     "home automation",
-	"esp8266",
-	"socketio"
+    "esp8266",
+    "socketio"
   ],
+  "license": "GNU3",
+  "main": "main.js",
+  "name": "iobroker.espadapterserver",
   "repository": {
     "type": "git",
-    "url": "https://github.com/milo1987/espadapterserver"
+    "url": "git+https://github.com/milo1987/espadapterserver.git"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "mocha": "^4.1.0",
-    "chai": "^4.1.2"
-  },
-  "main": "main.js",
-  "scripts": {
-    
-  },
-  "bugs": {
-    "url": "https://github.com/milo1987/espadapterserver/issues"
-  },
-  "readmeFilename": "README.md"
+  "scripts": {},
+  "version": "0.0.1"
 }

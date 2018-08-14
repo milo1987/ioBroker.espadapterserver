@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "espadapterserver",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
+			"0.0.3": {
+				"de": "Objekte werden nur noch angelegt, wenn diese nicht Existieren"
+			},
+		
 			"0.0.2": {
 				"de": "GIThub Version\n Log und Debug Funktionen wurden eingefügt."
 			},

@@ -288,7 +288,7 @@ class ESPSocketServer {
 				
 				varname = varname + ".webupdate";
 
-				adapter.setObject(varname, {
+				adapter.setObjectNotExists(varname, {
 						type: 'state',
 						common: {
 							name: varname,
@@ -327,7 +327,7 @@ class ESPSocketServer {
 				let varname = socket.name + ".vars." + parts[0];
 				
 					
-					adapter.setObject(varname, {
+					adapter.setObjectNotExists(varname, {
 						type: 'state',
 						common: {
 							name: varname,

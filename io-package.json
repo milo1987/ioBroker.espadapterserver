@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "espadapterserver",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
+			"0.0.4": {
+				"de": "Bei Neuanlegen von Variabeln \"true\" und \"false\" wird der Haken in IOBroker gesetzt. \n Bugfix im Bereich LoLin Board."
+			},
+		
 			"0.0.3": {
 				"de": "Objekte werden nur noch angelegt, wenn diese nicht Existieren"
 			},

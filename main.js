@@ -326,6 +326,21 @@ class ESPSocketServer {
 				let parts =  msg.split("!*!");
 				let varname = socket.name + ".vars." + parts[0];
 				
+				
+				if (parts[1] == "true" || parts[1] == "false") {
+					
+					adapter.setObjectNotExists(varname, {
+						type: 'state',
+						common: {
+							name: varname,
+							type: 'boolean',
+							role: 'indicator',
+							ack:  'true'
+						},
+						native: {}
+					});
+					
+				} else {
 					
 					adapter.setObjectNotExists(varname, {
 						type: 'state',
@@ -337,6 +352,8 @@ class ESPSocketServer {
 						},
 						native: {}
 					});
+					
+				}
 					
 					adapter.setState(varname,  {val:parts[1], ack:true});
 					

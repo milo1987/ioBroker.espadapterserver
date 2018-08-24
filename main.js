@@ -98,7 +98,6 @@ function main() {
 
 
 const socketIo = require('socket.io');
-//var middleware = require('socketio-wildcard')();
 
 
 class ESPSocketServer {
@@ -109,11 +108,22 @@ class ESPSocketServer {
 	start () {
 		this._initSocketIO();
 		
+		
+		
+		
+		
+		
+		
 		console.log("ESP Socket Server running");
 	}
 	
 	_initSocketIO() {
-		this._io = socketIo(this._port);		
+		this._io = socketIo(this._port, {
+		  pingInterval: 10000,
+		  pingTimeout: 1000,
+		  cookie: false
+		});
+	
 		
 		
 		
@@ -367,16 +377,32 @@ class ESPSocketServer {
 			});
 
 			socket.on ('disconnect', msg => {
-				adapter.setState(socket.name + ".system.status", {val:false, ack:true});
 				
-				for (var x=0; x<subscribers.length; x++) {
-					
-					adapter.unsubscribeStates(subscribers[x]);
-					
-				}
 				
-				adapter.unsubscribeStates(socket.name + ".system.webupdate");
-				adapter.log.info("Client " + socket.name + " disconnected");
+					
+					if (!socket.connected) {
+					
+						
+						adapter.setState(socket.name + ".system.status", {val:false, ack:true});
+						
+						for (var x=0; x<subscribers.length; x++) {
+							
+							adapter.unsubscribeStates(subscribers[x]);
+							
+						}
+					
+						adapter.unsubscribeStates(socket.name + ".system.webupdate");
+						adapter.unsubscribeStates(socket.name + ".system.debug");
+						adapter.log.info("Client " + socket.name + " disconnected");
+						
+						socket.disconnect(true);
+						
+					} else 
+						adapter.log.info ("Client disconnected, obwohl noch online");
+					
+					
+			
+				
 			});
 
 			
@@ -404,7 +430,8 @@ class ESPSocketServer {
 				adapter.log.error("Log-Error " + socket.name + ": " + msg);
 			});
 			
-			//socket.emit("event", "Testevent");
+			
+			
 			
 			adapter.log.info("Client " + socket.name + " erfolgreich verbunden");
 			

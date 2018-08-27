@@ -337,7 +337,7 @@ class ESPSocketServer {
 				
 				// Listener setzen
 				
-				adapter.subscribeStates(socket.name + ".vars.*");
+				//adapter.subscribeStates(socket.name + ".vars.*");
 				
 				
 				adapter.log.info("ClientInit: " + socket.name + " " + socket.version + " " + socket.ip);
@@ -383,8 +383,8 @@ class ESPSocketServer {
 					
 					adapter.setState(varname,  {val:parts[1], ack:true});
 					
-					//adapter.subscribeStates(varname);
-					//subscribers.push(varname);
+					adapter.subscribeStates(varname);
+					subscribers.push(varname);
 					adapter.log.info("Neue Variable angelegt: " + varname + " mit Wert: " + parts[1]);
 					
 				
@@ -409,7 +409,7 @@ class ESPSocketServer {
 					
 						adapter.unsubscribeStates(socket.name + ".system.webupdate");
 						adapter.unsubscribeStates(socket.name + ".system.debug");
-						adapter.unsubscribeStates(socket.name + ".vars.*");
+						//adapter.unsubscribeStates(socket.name + ".vars.*");
 						adapter.log.info("Client " + socket.name + " disconnected");
 						
 						socket.disconnect(true);
@@ -426,8 +426,8 @@ class ESPSocketServer {
 			socket.on('command', msg => { 
 			
 				let parts =  msg.split("~");
-				//let varname = socket.name + "." + "vars." + parts[0];
-				let varname = socket.name + "." + "vars.*";
+				let varname = socket.name + "." + "vars." + parts[0];
+				//let varname = socket.name + "." + "vars.*";
 				let wert = parts[1];
 			
 				adapter.unsubscribeStates(varname);

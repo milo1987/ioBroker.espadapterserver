@@ -106,8 +106,9 @@ class ESPSocketServer {
 	}
 	
 	start () {
-		this._initSocketIO();
 		
+		this._initSocketIO();
+		adapter.subscribeStates("*");
 		
 		
 		
@@ -132,23 +133,53 @@ class ESPSocketServer {
 		// Bei Änderungen von Variabeln ausführen
 		adapter.on('stateChange', function (id, state) {
     
-			if (state != null) {
+		//adapter.log.info("ID:" + id);
+		//adapter.log.info("ACK: " + state.ack);
+	
+			if (state != null && !state.ack) {
 				
-				
+				adapter.log.info("ID:" + id);
 				let parts = id.split(".");
 				let name = "";
+				let varname = "";
 				
-				for (var x = 2; x < parts.length-2; x++) {
-					name += parts[x];
+				let isName = true;
+				
+				for (var x = 2; x < parts.length; x++) {
+					let str = parts[x];
 					
-					if (x < parts.length-3)
-						name += ".";
+					if (isName) {
+						
+		
+						if (parts[x+1] == "system" || parts[x+1] == "vars") {
+							isName = false;
+							name += str;
+						} else
+							name += str + ".";
+					
+
+					} else {
+						
+						if (str != "vars" && str != "system") {
+							varname += str;
+							
+							if (x < parts.length - 1) {
+						    varname += ".";
+							}
+						}
+						
+						
+						
+						
+					}
+						
+
 				}
 				
 				
-				
-				let varname = parts[parts.length-1];
-				//adapter.log.info("Parts: " + name);
+
+				adapter.log.info("Parts Name: " + name);
+				adapter.log.info("Parts Varname: " + varname);
 				
 				if (parts[parts.length-1] === "webupdate") {
 					
@@ -168,10 +199,10 @@ class ESPSocketServer {
 				
 				} else {
 				
-
+				adapter.log.info("Varänderung: " + varname);
 					this._io.sockets.in(name).emit('command', varname + "~" + state.val);
 					
-					adapter.log.debug('Variabeländerung gesendet an ' + name + ': ' + state.val);
+					adapter.log.info('Variabeländerung gesendet an ' + name + varname + ': ' + state.val);
 			
 			
 				}
@@ -197,10 +228,7 @@ class ESPSocketServer {
 		this._io.on('connection', socket => {
 			//socket.ip = '';
 			socket.name = '';
-			let subscribers = [];
-			
-			
-			
+				
 			
 			
 			socket.on('init', msg => {
@@ -301,7 +329,7 @@ class ESPSocketServer {
 					});
 					
 				adapter.setState(varname + ".debug" , {val:false, ack:true});	
-				adapter.subscribeStates(varname + ".debug");
+				
 				
 				// Webupdate einfügen
 				
@@ -319,8 +347,7 @@ class ESPSocketServer {
 					});
 						
 				adapter.setState(varname, {val:false, ack:true});	
-				adapter.subscribeStates(varname);
-				
+								
 
 				// Ende Webupdate
 				
@@ -335,9 +362,6 @@ class ESPSocketServer {
 				adapter.setState(varname + ".loglevel" , {val:1, ack:true});
 				
 				
-				// Listener setzen
-				
-				//adapter.subscribeStates(socket.name + ".vars.*");
 				
 				
 				adapter.log.info("ClientInit: " + socket.name + " " + socket.version + " " + socket.ip);
@@ -346,6 +370,17 @@ class ESPSocketServer {
 				
 				
 			});
+			
+			
+			// PING FUNKTIONEN
+			
+			socket.on ('ping', msg => {
+				adapter.setState(socket.name + ".system.status", {val:true, ack:true})	
+			}
+
+			
+			// Variabeln INIT //
+			
 			
 			socket.on ('initVars', msg => {
 				
@@ -383,8 +418,7 @@ class ESPSocketServer {
 					
 					adapter.setState(varname,  {val:parts[1], ack:true});
 					
-					adapter.subscribeStates(varname);
-					subscribers.push(varname);
+					
 					adapter.log.info("Neue Variable angelegt: " + varname + " mit Wert: " + parts[1]);
 					
 				
@@ -395,7 +429,7 @@ class ESPSocketServer {
 			socket.on ('disconnect', msg => {
 				
 				
-					
+				/*	
 					if (!socket.connected) {
 					
 						
@@ -418,7 +452,7 @@ class ESPSocketServer {
 						adapter.log.info ("Client disconnected, obwohl noch online");
 					
 					
-			
+				*/
 				
 			});
 
@@ -430,10 +464,10 @@ class ESPSocketServer {
 				//let varname = socket.name + "." + "vars.*";
 				let wert = parts[1];
 			
-				adapter.unsubscribeStates(varname);
+			
 				adapter.log.info("Variabel " + varname + ": " + wert); 
 				adapter.setState(varname,  {val:wert, ack:true});
-				adapter.subscribeStates(varname);
+				
 				
 			
 			

@@ -3,7 +3,7 @@
         "name": "espadapterserver",
         "version": "0.0.6",
         "news": {
-			"0.0.7": {
+			"0.0.6": {
 				"de": "Einbau einer PING Funktion, statt online bei Connect & Disconnect. \n"
 			},
 		

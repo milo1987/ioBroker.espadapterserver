@@ -376,7 +376,7 @@ class ESPSocketServer {
 			
 			socket.on ('ping', msg => {
 				adapter.setState(socket.name + ".system.status", {val:true, ack:true})	
-			}
+			});
 
 			
 			// Variabeln INIT //

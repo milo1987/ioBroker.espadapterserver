@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "espadapterserver",
-        "version": "0.0.6",
+        "version": "0.0.7",
         "news": {
+			"0.0.7": {
+				"de": "Ping Funktion nun in Funktion."
+			},
 			"0.0.6": {
 				"de": "Einbau einer PING Funktion, statt online bei Connect & Disconnect. \n"
 			},
@@ -54,7 +57,8 @@
     },
     "native": {
         "port": 9999,
-        "espupdateurl": ""
+        "espupdateurl": "",
+		"pingtimeout": "1000"
     },
     "objects": [
 

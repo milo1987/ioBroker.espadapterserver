@@ -49,7 +49,7 @@ let variable = 1234;
 // is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
     try {
-        adapter.log.info('cleaned everything up...');
+        adapter.log.debug('cleaned everything up...');
         callback();
     } catch (e) {
         callback();
@@ -59,7 +59,7 @@ adapter.on('unload', function (callback) {
 // is called if a subscribed object changes
 adapter.on('objectChange', function (id, obj) {
     // Warning, obj can be null if it was deleted
-    adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
+    adapter.log.debug('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
 
 
@@ -78,9 +78,9 @@ function main() {
 
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
-    adapter.log.info('config Port: '    + adapter.config.port);
-    adapter.log.info('config Webserver Update URL: '    + adapter.config.espupdateurl);
-
+    adapter.log.debug('config Port: '    + adapter.config.port);
+    adapter.log.debug('config Webserver Update URL: '    + adapter.config.espupdateurl);
+	adapter.log.debug('Ping Timeout Intervall: '    + adapter.config.pingtimeout);
 
 
 	
@@ -110,7 +110,68 @@ class ESPSocketServer {
 		this._initSocketIO();
 		adapter.subscribeStates("*");
 		
-		
+		setInterval(function() {
+			
+			//let zahl = adapter.getObject('').common.members;
+			//adapter.log.debug("Anzahl " + zahl);
+			
+			
+			let clients = adapter.getStatesOf(function(err, states) {
+				
+				
+				for (var i in states) {
+					
+					let cl = states[i];
+					
+					//adapter.log.debug("Name: " + Object.keys(cl));
+					if (cl.common.name.endsWith ("system.lastPing")) {
+						
+
+						
+						adapter.getState(cl.common.name, function(err, state) {
+							let split = cl.common.name.split(".");
+							let clname = "";
+						
+							for (var x = 0; x < split.length-2; x++) {
+								clname += split[x];
+								
+								if (x < split.length-3)
+									clname += ".";
+							}
+							
+
+							let d = new Date();
+							let stamp = parseInt(state.val) + parseInt(adapter.config.pingtimeout);
+							
+							
+							if ( stamp > d.getTime()) {
+								
+								adapter.log.debug("Client " + clname + " ist online, [Stamp: " + stamp + ", Time: " + d.getTime() + "]" );
+								
+								adapter.setState(clname + ".system.status", {val:true, ack:true});
+								
+								
+							} else {
+								adapter.log.debug("Client " + clname + " ist offline, [Stamp: " + stamp + ", Time: " + d.getTime() + "]" );
+								adapter.setState(clname + ".system.status", {val:false, ack:true});
+							}
+						});
+						
+						
+					}
+					
+					
+				}
+				
+			
+				 
+				 		
+				
+			});
+			
+			
+
+		}.bind(this), adapter.config.pingtimeout);
 		
 		
 		
@@ -133,12 +194,12 @@ class ESPSocketServer {
 		// Bei Änderungen von Variabeln ausführen
 		adapter.on('stateChange', function (id, state) {
     
-		//adapter.log.info("ID:" + id);
-		//adapter.log.info("ACK: " + state.ack);
+		//adapter.log.debug("ID:" + id);
+		//adapter.log.debug("ACK: " + state.ack);
 	
 			if (state != null && !state.ack) {
 				
-				adapter.log.info("ID:" + id);
+				adapter.log.debug("ID:" + id);
 				let parts = id.split(".");
 				let name = "";
 				let varname = "";
@@ -178,8 +239,8 @@ class ESPSocketServer {
 				
 				
 
-				adapter.log.info("Parts Name: " + name);
-				adapter.log.info("Parts Varname: " + varname);
+				adapter.log.debug("Parts Name: " + name);
+				adapter.log.debug("Parts Varname: " + varname);
 				
 				if (parts[parts.length-1] === "webupdate") {
 					
@@ -187,7 +248,7 @@ class ESPSocketServer {
 					
 						this._io.sockets.in(name).emit('webUpdate', adapter.config.espupdateurl);
 						
-						adapter.log.info('Clientwebupdate: ' + name + ': ' + adapter.config.espupdateurl);
+						adapter.log.debug('Clientwebupdate: ' + name + ': ' + adapter.config.espupdateurl);
 						adapter.setState(id, false);
 					
 					}
@@ -199,10 +260,10 @@ class ESPSocketServer {
 				
 				} else {
 				
-				adapter.log.info("Varänderung: " + varname);
+				adapter.log.debug("Varänderung: " + varname);
 					this._io.sockets.in(name).emit('command', varname + "~" + state.val);
 					
-					adapter.log.info('Variabeländerung gesendet an ' + name + varname + ': ' + state.val);
+					adapter.log.debug('Variabeländerung gesendet an ' + name + varname + ': ' + state.val);
 			
 			
 				}
@@ -281,7 +342,24 @@ class ESPSocketServer {
 						native: {}
 					});
 					
-				adapter.setState(varname + ".version" , {val:socket.version, ack:true});	
+				adapter.setState(varname + ".version" , {val:socket.version, ack:true});
+
+				
+				// Letzter Sendestatus
+				
+				adapter.setObjectNotExists(varname + ".lastPing", {
+						type: 'state',
+						common: {
+							name: varname + ".lastPing",
+							type: 'mixed',
+							role: 'indicator',
+							ack:  'true'
+						},
+						native: {}
+					});
+					
+				
+				adapter.setState(varname + ".lastPing" , {val:new Date().getTime(), ack:true});
 				
 				// API - Version
 				
@@ -364,7 +442,7 @@ class ESPSocketServer {
 				
 				
 				
-				adapter.log.info("ClientInit: " + socket.name + " " + socket.version + " " + socket.ip);
+				adapter.log.debug("ClientInit: " + socket.name + " " + socket.version + " " + socket.ip);
 				
 				
 				
@@ -375,7 +453,7 @@ class ESPSocketServer {
 			// PING FUNKTIONEN
 			
 			socket.on ('ping', msg => {
-				adapter.setState(socket.name + ".system.status", {val:true, ack:true})	
+				adapter.setState(socket.name + ".system.lastPing", {val:new Date().getTime(), ack:true});	
 			});
 
 			
@@ -419,7 +497,7 @@ class ESPSocketServer {
 					adapter.setState(varname,  {val:parts[1], ack:true});
 					
 					
-					adapter.log.info("Neue Variable angelegt: " + varname + " mit Wert: " + parts[1]);
+					adapter.log.debug("Neue Variable angelegt: " + varname + " mit Wert: " + parts[1]);
 					
 				
 				
@@ -444,12 +522,12 @@ class ESPSocketServer {
 						adapter.unsubscribeStates(socket.name + ".system.webupdate");
 						adapter.unsubscribeStates(socket.name + ".system.debug");
 						//adapter.unsubscribeStates(socket.name + ".vars.*");
-						adapter.log.info("Client " + socket.name + " disconnected");
+						adapter.log.debug("Client " + socket.name + " disconnected");
 						
 						socket.disconnect(true);
 						
 					} else 
-						adapter.log.info ("Client disconnected, obwohl noch online");
+						adapter.log.debug ("Client disconnected, obwohl noch online");
 					
 					
 				*/
@@ -465,10 +543,10 @@ class ESPSocketServer {
 				let wert = parts[1];
 			
 			
-				adapter.log.info("Variabel " + varname + ": " + wert); 
+				adapter.log.debug("Variabel " + varname + ": " + wert); 
 				adapter.setState(varname,  {val:wert, ack:true});
 				
-				
+				adapter.setState(socket.name + ".system.lastPing", {val:new Date().getTime(), ack:true});
 			
 			
 			});
@@ -485,7 +563,7 @@ class ESPSocketServer {
 			
 			
 			
-			adapter.log.info("Client " + socket.name + " erfolgreich verbunden");
+			adapter.log.debug("Client " + socket.name + " erfolgreich verbunden");
 			
 			});
 		

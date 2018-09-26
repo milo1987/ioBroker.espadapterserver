@@ -58,7 +58,7 @@
     "native": {
         "port": 9999,
         "espupdateurl": "",
-		"pingtimeout": "1000"
+		"pingtimeout": 10000
     },
     "objects": [
 

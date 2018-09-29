@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "espadapterserver",
-        "version": "0.0.7",
+        "version": "0.0.8",
         "news": {
+			"0.0.8": {
+				"de": "Ping Funktion beim ESP Client hinzugefügt."
+			},
 			"0.0.7": {
 				"de": "Ping Funktion nun in Funktion."
 			},

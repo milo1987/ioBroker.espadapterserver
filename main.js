@@ -454,6 +454,7 @@ class ESPSocketServer {
 			
 			socket.on ('ping', msg => {
 				adapter.setState(socket.name + ".system.lastPing", {val:new Date().getTime(), ack:true});	
+				socket.emit('ping', "ping" );
 			});
 
 			

@@ -182,7 +182,7 @@ class ESPSocketServer {
 	_initSocketIO() {
 		this._io = socketIo(this._port, {
 		  pingInterval: 10000,
-		  pingTimeout: 1000,
+		  pingTimeout: 10000,
 		  cookie: false
 		});
 	
@@ -258,6 +258,12 @@ class ESPSocketServer {
 					this._io.sockets.in(name).emit('debug', state.val);	
 					adapter.log.debug('Debuglevel für: ' + name + ' aktiviert');
 				
+				} else if (parts[parts.length-1] === "reset") {
+					if(state.val == true) {
+						this._io.sockets.in(name).emit('reset', state.val);	
+						adapter.log.debug('Resetbefehl gesendet für: ' + name + ' aktiviert');
+						adapter.setState(varname + ".reset" , {val:false, ack:true});
+					}
 				} else {
 				
 				adapter.log.debug("Varänderung: " + varname);
@@ -407,6 +413,21 @@ class ESPSocketServer {
 					});
 					
 				adapter.setState(varname + ".debug" , {val:false, ack:true});	
+				
+				// RESET Funktion
+				
+				adapter.setObjectNotExists(varname + ".reset", {
+						type: 'state',
+						common: {
+							name: varname + ".reset",
+							type: 'boolean',
+							role: 'indicator',
+							ack:  'true'
+						},
+						native: {}
+					});
+					
+				adapter.setState(varname + ".reset" , {val:false, ack:true});	
 				
 				
 				// Webupdate einfügen

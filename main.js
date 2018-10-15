@@ -318,138 +318,139 @@ class ESPSocketServer {
 				
 				
 				
+				if (varname != "") {
 				
-				// Clientname für die Onlinetabelle anlegen
-				
-				adapter.setObjectNotExists(varname + ".status", {
-						type: 'state',
-						common: {
-							name: varname + ".status",
-							type: 'boolean',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
+					// Clientname für die Onlinetabelle anlegen
 					
-				adapter.setState(varname + ".status" , {val:true, ack:true});	
-				
-				
-				// Version
-				
-				adapter.setObjectNotExists(varname + ".version", {
-						type: 'state',
-						common: {
-							name: varname + ".version",
-							type: 'mixed',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
-					
-				adapter.setState(varname + ".version" , {val:socket.version, ack:true});
-
-				
-				// Letzter Sendestatus
-				
-				adapter.setObjectNotExists(varname + ".lastPing", {
-						type: 'state',
-						common: {
-							name: varname + ".lastPing",
-							type: 'mixed',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
-					
-				
-				adapter.setState(varname + ".lastPing" , {val:new Date().getTime(), ack:true});
-				
-				// API - Version
-				
-				adapter.setObjectNotExists(varname + ".apiversion", {
-						type: 'state',
-						common: {
-							name: varname + ".apiversion",
-							type: 'mixed',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
-					
-				adapter.setState(varname + ".apiversion" , {val:socket.apiversion, ack:true});	
-				
-				// IP Adresse
-				
-				adapter.setObjectNotExists(varname + ".ip", {
-						type: 'state',
-						common: {
-							name: varname + ".ip",
-							type: 'mixed',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
-					
-				adapter.setState(varname + ".ip" , {val:socket.ip, ack:true});
-				
-				
-				
-				// DEBUG Level
-				
-				adapter.setObjectNotExists(varname + ".debug", {
-						type: 'state',
-						common: {
-							name: varname + ".debug",
-							type: 'boolean',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
-					
-				adapter.setState(varname + ".debug" , {val:false, ack:true});	
-				
-				// RESET Funktion
-				
-				adapter.setObjectNotExists(varname + ".reset", {
-						type: 'state',
-						common: {
-							name: varname + ".reset",
-							type: 'boolean',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
-					
-				adapter.setState(varname + ".reset" , {val:false, ack:true});	
-				
-				
-				// Webupdate einfügen
-				
-				varname = varname + ".webupdate";
-
-				adapter.setObjectNotExists(varname, {
-						type: 'state',
-						common: {
-							name: varname,
-							type: 'boolean',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
+					adapter.setObjectNotExists(varname + ".status", {
+							type: 'state',
+							common: {
+								name: varname + ".status",
+								type: 'boolean',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
 						
-				adapter.setState(varname, {val:false, ack:true});	
-								
+					adapter.setState(varname + ".status" , {val:true, ack:true});	
+					
+					
+					// Version
+					
+					adapter.setObjectNotExists(varname + ".version", {
+							type: 'state',
+							common: {
+								name: varname + ".version",
+								type: 'mixed',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					adapter.setState(varname + ".version" , {val:socket.version, ack:true});
 
-				// Ende Webupdate
-				
+					
+					// Letzter Sendestatus
+					
+					adapter.setObjectNotExists(varname + ".lastPing", {
+							type: 'state',
+							common: {
+								name: varname + ".lastPing",
+								type: 'mixed',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					
+					adapter.setState(varname + ".lastPing" , {val:new Date().getTime(), ack:true});
+					
+					// API - Version
+					
+					adapter.setObjectNotExists(varname + ".apiversion", {
+							type: 'state',
+							common: {
+								name: varname + ".apiversion",
+								type: 'mixed',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					adapter.setState(varname + ".apiversion" , {val:socket.apiversion, ack:true});	
+					
+					// IP Adresse
+					
+					adapter.setObjectNotExists(varname + ".ip", {
+							type: 'state',
+							common: {
+								name: varname + ".ip",
+								type: 'mixed',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					adapter.setState(varname + ".ip" , {val:socket.ip, ack:true});
+					
+					
+					
+					// DEBUG Level
+					
+					adapter.setObjectNotExists(varname + ".debug", {
+							type: 'state',
+							common: {
+								name: varname + ".debug",
+								type: 'boolean',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					adapter.setState(varname + ".debug" , {val:false, ack:true});	
+					
+					// RESET Funktion
+					
+					adapter.setObjectNotExists(varname + ".reset", {
+							type: 'state',
+							common: {
+								name: varname + ".reset",
+								type: 'boolean',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					adapter.setState(varname + ".reset" , {val:false, ack:true});	
+					
+					
+					// Webupdate einfügen
+					
+					varname = varname + ".webupdate";
+
+					adapter.setObjectNotExists(varname, {
+							type: 'state',
+							common: {
+								name: varname,
+								type: 'boolean',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+							
+					adapter.setState(varname, {val:false, ack:true});	
+									
+
+					// Ende Webupdate
+				}
 				
 				// Sende Uhrzeit				
 				let zeit = new Date();
@@ -487,38 +488,40 @@ class ESPSocketServer {
 				let parts =  msg.split("!*!");
 				let varname = socket.name + ".vars." + parts[0];
 				
+				if (varname != "") {
 				
-				if (parts[1] == "true" || parts[1] == "false") {
-					
-					adapter.setObjectNotExists(varname, {
-						type: 'state',
-						common: {
-							name: varname,
-							type: 'boolean',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
-					
-				} else {
-					
-					adapter.setObjectNotExists(varname, {
-						type: 'state',
-						common: {
-							name: varname,
-							type: 'mixed',
-							role: 'indicator',
-							ack:  'true'
-						},
-						native: {}
-					});
+					if (parts[1] == "true" || parts[1] == "false") {
+						
+						adapter.setObjectNotExists(varname, {
+							type: 'state',
+							common: {
+								name: varname,
+								type: 'boolean',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					} else {
+						
+						adapter.setObjectNotExists(varname, {
+							type: 'state',
+							common: {
+								name: varname,
+								type: 'mixed',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+					}
+						
+						adapter.setState(varname,  {val:parts[1], ack:true});
 					
 				}
-					
-					adapter.setState(varname,  {val:parts[1], ack:true});
-					
-					
+				
 					adapter.log.debug("Neue Variable angelegt: " + varname + " mit Wert: " + parts[1]);
 					
 				

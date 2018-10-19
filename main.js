@@ -264,6 +264,22 @@ class ESPSocketServer {
 						adapter.log.debug('Resetbefehl gesendet für: ' + name + ' aktiviert');
 						adapter.setState(varname + ".reset" , {val:false, ack:true});
 					}
+					
+				} else if (parts[parts.length-1] === "gruppenname") {
+					
+					let s = state.val.split(":");
+					
+					if (s[0] != "" && s[1] != "") {
+						
+						this._io.sockets.in(name).emit('setGrpname', s[0] + ":" + s[1]);
+						
+						
+					} else
+						adapter.log.error("Fehler beim setzen der Gruppenvariabeln. Bitte format Gruppe:Name benutzen");
+					
+					
+					
+					
 				} else {
 				
 				adapter.log.debug("Varänderung: " + varname);
@@ -309,6 +325,7 @@ class ESPSocketServer {
 				socket.version = parts[1];
 				socket.ip = parts[2];
 				socket.apiversion = parts[3];
+				socket.grpchip = parts[4];
 				
 				socket.join(socket.name);
 				
@@ -432,13 +449,11 @@ class ESPSocketServer {
 					
 					
 					// Webupdate einfügen
-					
-					varname = varname + ".webupdate";
 
-					adapter.setObjectNotExists(varname, {
+					adapter.setObjectNotExists(varname + ".webupdate", {
 							type: 'state',
 							common: {
-								name: varname,
+								name: varname + ".webupdate",
 								type: 'boolean',
 								role: 'indicator',
 								ack:  'true'
@@ -446,10 +461,32 @@ class ESPSocketServer {
 							native: {}
 						});
 							
-					adapter.setState(varname, {val:false, ack:true});	
+					adapter.setState(varname + ".webupdate", {val:false, ack:true});	
 									
 
-					// Ende Webupdate
+					// Gruppenfunktionen aktivieren
+					
+					if (socket.grpchip == 1) {
+						
+						adapter.setObjectNotExists(varname + ".grp_function.gruppenname", {
+							type: 'state',
+							common: {
+								name: varname + ".grp_function.gruppenname",
+								type: 'mixed',
+								role: 'indicator',
+								ack:  'true'
+							},
+							native: {}
+						});
+						
+						
+						let vsplit = varname.split(".");
+						adapter.setState(varname + ".grp_function.gruppenname", {val:vsplit[0] + ":" + vsplit[1], ack:true});
+						
+						
+					}
+					
+					
 				}
 				
 				// Sende Uhrzeit				
@@ -464,7 +501,7 @@ class ESPSocketServer {
 				
 				
 				
-				adapter.log.debug("ClientInit: " + socket.name + " " + socket.version + " " + socket.ip);
+				adapter.log.debug("ClientInit: " + socket.name + " " + socket.version + " " + socket.ip + " " + socket.grpchip);
 				
 				
 				
@@ -526,36 +563,6 @@ class ESPSocketServer {
 					
 				
 				
-				
-			});
-
-			socket.on ('disconnect', msg => {
-				
-				
-				/*	
-					if (!socket.connected) {
-					
-						
-						adapter.setState(socket.name + ".system.status", {val:false, ack:true});
-						
-						for (var x=0; x<subscribers.length; x++) {
-							
-							adapter.unsubscribeStates(subscribers[x]);
-							
-						}
-					
-						adapter.unsubscribeStates(socket.name + ".system.webupdate");
-						adapter.unsubscribeStates(socket.name + ".system.debug");
-						//adapter.unsubscribeStates(socket.name + ".vars.*");
-						adapter.log.debug("Client " + socket.name + " disconnected");
-						
-						socket.disconnect(true);
-						
-					} else 
-						adapter.log.debug ("Client disconnected, obwohl noch online");
-					
-					
-				*/
 				
 			});
 

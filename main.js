@@ -249,7 +249,7 @@ class ESPSocketServer {
 						this._io.sockets.in(name).emit('webUpdate', adapter.config.espupdateurl);
 						
 						adapter.log.debug('Clientwebupdate: ' + name + ': ' + adapter.config.espupdateurl);
-						adapter.setState(id, false);
+						//adapter.setState(id, false);
 					
 					}
 					
@@ -326,6 +326,7 @@ class ESPSocketServer {
 				socket.ip = parts[2];
 				socket.apiversion = parts[3];
 				socket.grpchip = parts[4];
+				socket.resetcounter = parts[5];
 				
 				socket.join(socket.name);
 				
@@ -461,7 +462,18 @@ class ESPSocketServer {
 							native: {}
 						});
 							
-					adapter.setState(varname + ".webupdate", {val:false, ack:true});	
+
+					
+					adapter.getState(varname + ".webupdate", function(err, state) {
+					
+						//adapter.log.info("ChWeb: " + state.val);
+						if (state.val) {
+							socket.emit('webUpdate', adapter.config.espupdateurl);
+							
+							adapter.log.info('Nach Reconnect: Clientwebupdate: ' + socket.name + ': ' + adapter.config.espupdateurl);
+						}
+						
+					});
 									
 
 					// Gruppenfunktionen aktivieren
@@ -485,6 +497,25 @@ class ESPSocketServer {
 						
 						
 					}
+					
+					// Timeout Reset-Counter setzen:
+					
+					adapter.setObjectNotExists(varname + ".resetcounter", {
+						type: 'state',
+						common: {
+							name: varname + ".resetcounter",
+							type: 'mixed',
+							role: 'indicator',
+							ack:  'true'
+						},
+						native: {}
+					});
+						
+
+					adapter.setState(varname + ".resetcounter", {val:socket.resetcounter, ack:true});
+						
+						
+					
 					
 					
 				}
@@ -592,7 +623,10 @@ class ESPSocketServer {
 				adapter.log.error("Log-Error " + socket.name + ": " + msg);
 			});
 			
-			
+			socket.on('webUpdate', msg => { 
+				adapter.setState(socket.name + ".system.webupdate", false);
+				adapter.log.info("Webupdate für " + socket.name + " wurde durchgeführt");
+			});
 			
 			
 			adapter.log.debug("Client " + socket.name + " erfolgreich verbunden");

@@ -1,9 +1,11 @@
 {
     "common": {
         "name": "espadapterserver",
-        "version": "0.0.11",
+        "version": "0.0.12",
         "news": {
-			"0.0.11": {
+			"0.0.12": {
+				"de": "Webupdate kann nun auch offline gestartet werden und wird beim Login an den ESP übertragen."
+			},"0.0.11": {
 				"de": "Gleiche Software auf dem ESP können nun als Gruppe zusammen geupdated werden."
 			},
 			"0.0.10": {

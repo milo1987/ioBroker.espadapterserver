@@ -467,7 +467,7 @@ class ESPSocketServer {
 					adapter.getState(varname + ".webupdate", function(err, state) {
 					
 						try {
-							adapter.log.info("ChWeb: " + state.val);
+							//adapter.log.info("ChWeb: " + state.val);
 							if (state.val) {
 								socket.emit('webUpdate', adapter.config.espupdateurl);
 								

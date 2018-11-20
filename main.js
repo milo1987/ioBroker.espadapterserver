@@ -463,7 +463,7 @@ class ESPSocketServer {
 						});
 							
 
-					
+					adapter.log.debug ("Fehlerfindung Webupdate: " + varname);
 					adapter.getState(varname + ".webupdate", function(err, state) {
 					
 						//adapter.log.info("ChWeb: " + state.val);

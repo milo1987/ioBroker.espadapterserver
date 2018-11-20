@@ -463,14 +463,19 @@ class ESPSocketServer {
 						});
 							
 
-					adapter.log.debug ("Fehlerfindung Webupdate: " + varname);
+					
 					adapter.getState(varname + ".webupdate", function(err, state) {
 					
-						//adapter.log.info("ChWeb: " + state.val);
-						if (state.val) {
-							socket.emit('webUpdate', adapter.config.espupdateurl);
+						try {
+							adapter.log.info("ChWeb: " + state.val);
+							if (state.val) {
+								socket.emit('webUpdate', adapter.config.espupdateurl);
+								
+								adapter.log.info('Nach Reconnect: Clientwebupdate: ' + socket.name + ': ' + adapter.config.espupdateurl);
+							}
 							
-							adapter.log.info('Nach Reconnect: Clientwebupdate: ' + socket.name + ': ' + adapter.config.espupdateurl);
+						} catch (err) {
+							adapter.log.error("Fehler beim Setzen des WebUpdate, Client: " + socket.name + ", Fehler: " + err);
 						}
 						
 					});

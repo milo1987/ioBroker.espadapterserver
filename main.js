@@ -333,7 +333,7 @@ class ESPSocketServer {
 				
 				let varname = socket.name + ".system";
 				
-				
+				adapter.log.debug("Client Init: " + varname);
 				
 				
 				if (varname != "") {
@@ -629,7 +629,7 @@ class ESPSocketServer {
 			});
 			
 			
-			adapter.log.debug("Client " + socket.name + " erfolgreich verbunden");
+			
 			
 			});
 		

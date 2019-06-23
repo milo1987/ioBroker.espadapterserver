@@ -461,7 +461,8 @@ class ESPSocketServer {
 							},
 							native: {}
 						});
-							
+					adapter.setState(varname + ".webupdate" , {val:false, ack:true});
+					
 
 					
 					adapter.getState(varname + ".webupdate", function(err, state) {
